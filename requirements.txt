@@ -1,0 +1,21 @@
+# Clara Answers Automation Pipeline
+# Zero-cost automation: Demo Call → Retell Agent → Onboarding Updates
+# Python 3.10+
+
+# Core LLM
+langchain>=0.3.0
+langchain-core>=0.3.0
+langchain-groq>=0.2.0
+
+# Data validation
+pydantic>=2.0.0
+
+# API Server (for n8n integration)
+fastapi>=0.100.0
+uvicorn>=0.23.0
+
+# Environment
+python-dotenv>=1.0.0
+
+# YAML support (optional, for config files)
+pyyaml>=6.0
