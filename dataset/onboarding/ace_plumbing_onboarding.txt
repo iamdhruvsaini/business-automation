@@ -1,0 +1,40 @@
+ONBOARDING CALL TRANSCRIPT - ACE PLUMBING SERVICES
+Date: January 22, 2026
+Participants: Clara Onboarding Team, Mike (ACE Plumbing Owner)
+
+---
+
+Clara: Hi Mike, this is your onboarding call for ACE Plumbing. We've set up your initial agent configuration. I want to go through some details and see if anything needs to be updated.
+
+Mike: Sure, let's do it.
+
+Clara: First, your business hours - we have Monday through Friday, 8 AM to 6 PM Eastern. Is that correct?
+
+Mike: Actually, we just decided to extend our hours. Can you change it to 7 AM to 7 PM? And we're now open on Saturdays too, 8 AM to 2 PM.
+
+Clara: Got it. Extended weekday hours and Saturday service. Any changes to your services?
+
+Mike: Yes! We just added tankless water heater installation to our services. That's getting really popular. And we're now doing bathroom remodeling - full bathroom renovations, not just plumbing.
+
+Clara: Great additions. What about your emergency contacts?
+
+Mike: The backup tech number changed. The new backup is 404-555-9876 instead of the old one. And actually, for after-hours emergencies, I want them to try me first at 404-555-1111 before the on-call tech.
+
+Clara: So you first, then on-call tech, then backup?
+
+Mike: Exactly. And reduce the timeout to 20 seconds between each try, not 30.
+
+Clara: Any other changes to how calls should be handled?
+
+Mike: Yes, one important thing. We just partnered with ServiceTrade for our job management. The AI should NEVER tell customers we'll "create a ticket" or mention ServiceTrade. Just say we're "scheduling" or "noting" their request.
+
+Clara: Understood. No mention of ServiceTrade to customers. Anything else?
+
+Mike: Our service area expanded. We now cover all of metro Atlanta plus Marietta and Alpharetta. And for non-emergency after-hours calls, tell them we'll call back by 9 AM, not just "first thing in the morning."
+
+Clara: Perfect. Those are great clarifications. Anything else?
+
+Mike: That's it for now. Thanks!
+
+---
+END OF TRANSCRIPT

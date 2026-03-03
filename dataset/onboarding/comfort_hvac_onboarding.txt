@@ -1,0 +1,44 @@
+ONBOARDING CALL TRANSCRIPT - COMFORT HEATING AND COOLING
+Date: January 26, 2026
+Participants: Clara Onboarding Team, Lisa (Comfort Heating and Cooling Manager)
+
+---
+
+Clara: Hi Lisa, let's review your Comfort Heating and Cooling configuration.
+
+Lisa: Perfect. We've had some changes since the demo.
+
+Clara: Business hours - Monday to Friday 8 AM to 6 PM, Saturday 9 AM to 2 PM Mountain Time?
+
+Lisa: Correct, but we want to explicitly note we're closed on major holidays. The agent should say "we're closed today for the holiday" on New Year's Day, Memorial Day, July 4th, Labor Day, Thanksgiving, and Christmas.
+
+Clara: Holiday schedule noted. Services update?
+
+Lisa: We're now doing geothermal heating systems - that's a specialty service. And we started offering indoor air quality testing. Also, we now service window AC units - I know I said we didn't, but we trained for it.
+
+Clara: Great additions. Emergency contacts?
+
+Lisa: Big change here. Our on-call tech line 303-555-7777 is being replaced with a dispatch service. New number is 303-555-8000. And Jim's number is the same as backup.
+
+Clara: Updated primary emergency line. Call handling changes?
+
+Lisa: Yes. We integrated with FieldEdge for scheduling. Don't mention the software - just say "schedule" or "book." And for after-hours non-emergencies, we want to offer online booking too. Direct them to comforthvacdenver.com/book.
+
+Clara: Any changes to how you prioritize calls?
+
+Lisa: Yes! Service contract members should always be flagged as priority. Ask "Do you have a service agreement with us?" early in the call. If yes, note them as priority and let them know they get same-day service when possible.
+
+Clara: Service agreement priority. Service area changes?
+
+Lisa: We expanded. We now go to Fort Collins to the north, that's about 60 miles. So update the radius to 60 miles from downtown Denver.
+
+Clara: Larger service area. Anything else?
+
+Lisa: One thing - we're running a "Spring Tune-Up Special" through April. $79 for AC tune-up, regular price $129. Mention this if someone calls about AC maintenance.
+
+Clara: Seasonal promotion noted. All set?
+
+Lisa: Yes, that's everything. Thanks!
+
+---
+END OF TRANSCRIPT

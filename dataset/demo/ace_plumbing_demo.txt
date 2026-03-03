@@ -1,0 +1,44 @@
+DEMO CALL TRANSCRIPT - ACE PLUMBING SERVICES
+Date: January 15, 2026
+Participants: Sarah (Clara Sales), Mike (ACE Plumbing Owner)
+
+---
+
+Sarah: Hi Mike, thanks for taking the time to chat with us today about Clara's AI phone answering service.
+
+Mike: Yeah, no problem. We've been getting a lot of after-hours calls that we're missing, and I heard you guys might be able to help.
+
+Sarah: Absolutely. So tell me a bit about ACE Plumbing. What kind of services do you offer?
+
+Mike: We're a full-service plumbing company. We do residential and commercial plumbing, drain cleaning, water heater installation and repair, pipe repairs, and we also handle emergency plumbing situations 24/7.
+
+Sarah: Great. And what are your normal business hours?
+
+Mike: We're open Monday through Friday, 8 AM to 6 PM. We're in the Eastern timezone, based out of Atlanta, Georgia. Our office is at 1234 Peachtree Street, Atlanta, GA 30309.
+
+Sarah: Perfect. Now you mentioned emergency calls - how do you define what's an emergency?
+
+Mike: Good question. For us, emergencies are things like major water leaks, burst pipes, sewage backups, no hot water in winter, or flooding. Basically anything that could cause property damage if not addressed immediately.
+
+Sarah: And how do you want emergency calls handled after hours?
+
+Mike: So for emergencies, I want the caller to be transferred to our on-call technician. The primary number is 404-555-1234. If they don't answer within 30 seconds, try our backup tech at 404-555-5678. If neither answers, take a message and tell the customer we'll call back within 15 minutes.
+
+Sarah: What about non-emergency calls after hours?
+
+Mike: Just take a message. Get their name, phone number, and what they need. Tell them we'll call back first thing in the morning.
+
+Sarah: And during business hours?
+
+Mike: During business hours, transfer all calls to our main office line at 404-555-0000. If that's busy, the receptionist Jenny can be reached at extension 101.
+
+Sarah: Any special instructions or things the AI should know?
+
+Mike: Yeah, we don't do pool plumbing or irrigation systems. If someone asks about that, politely tell them we don't offer those services and maybe suggest they search online for a specialist. Also, always ask the caller for their address - we only service the greater Atlanta metro area.
+
+Sarah: Got it. This is really helpful, Mike. We'll get this set up for you.
+
+Mike: Sounds good. Looking forward to it.
+
+---
+END OF TRANSCRIPT
