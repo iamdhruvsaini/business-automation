@@ -29,6 +29,11 @@ OUTPUT_DIR = PROJECT_ROOT / "outputs" / "accounts"
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 GROQ_MODEL = "llama-3.1-8b-instant"
 
+# ============ MONGODB CONFIGURATION ============
+
+MONGODB_URI = os.getenv("MONGODB_URI", "mongodb://admin:password@localhost:27017/clara?authSource=admin")
+MONGODB_DATABASE = os.getenv("MONGODB_DATABASE", "clara")
+
 # ============ LOGGING ============
 
 logging.basicConfig(

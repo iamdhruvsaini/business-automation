@@ -64,9 +64,9 @@ class DemoExtraction(BaseModel):
         default="", description="Main office phone number for transfers"
     )
 
-    after_hours_instructions: str = Field(
-        default="Take message",
-        description="What to do for non-emergency after-hours calls",
+    non_emergency_after_hours_action: str = Field(
+        default="Take a message",
+        description="Simple string: what to do for NON-EMERGENCY calls after hours. Must be a plain text string like 'Take a message with name and number' - NOT an object.",
     )
 
     service_area: str = Field(default="", description="Geographic area served")
