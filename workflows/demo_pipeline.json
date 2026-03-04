@@ -1,0 +1,96 @@
+{
+  "name": "Clara Pipeline - Demo Only (Pipeline A)",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "trigger-manual",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "http://api:8000/health",
+        "options": {}
+      },
+      "id": "health-check",
+      "name": "Check API Health",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://api:8000/pipeline/demo",
+        "options": {
+          "timeout": 300000
+        }
+      },
+      "id": "pipeline-a",
+      "name": "Process All Demo Calls",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "http://api:8000/accounts",
+        "options": {}
+      },
+      "id": "list-results",
+      "name": "List Generated Accounts",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [900, 300]
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Check API Health",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check API Health": {
+      "main": [
+        [
+          {
+            "node": "Process All Demo Calls",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process All Demo Calls": {
+      "main": [
+        [
+          {
+            "node": "List Generated Accounts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "tags": [
+    {
+      "name": "clara-pipeline"
+    }
+  ],
+  "pinData": {}
+}

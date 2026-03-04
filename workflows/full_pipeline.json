@@ -1,0 +1,177 @@
+{
+  "name": "Clara Pipeline - Full Automation",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "trigger-manual",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "http://api:8000/health",
+        "options": {}
+      },
+      "id": "health-check",
+      "name": "Check API Health",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "http://api:8000/dataset",
+        "options": {}
+      },
+      "id": "list-dataset",
+      "name": "List Dataset Files",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://api:8000/pipeline/demo",
+        "options": {
+          "timeout": 300000
+        }
+      },
+      "id": "pipeline-a",
+      "name": "Pipeline A: Demo → v1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://api:8000/pipeline/onboarding",
+        "options": {
+          "timeout": 300000
+        }
+      },
+      "id": "pipeline-b",
+      "name": "Pipeline B: Onboarding → v2",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1120, 300]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "http://api:8000/accounts",
+        "options": {}
+      },
+      "id": "list-results",
+      "name": "List Generated Accounts",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1340, 300]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "pipeline_status",
+              "value": "complete"
+            },
+            {
+              "name": "summary",
+              "value": "={{ $json.count }} accounts processed"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "set-complete",
+      "name": "Pipeline Complete",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [1560, 300]
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Check API Health",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check API Health": {
+      "main": [
+        [
+          {
+            "node": "List Dataset Files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "List Dataset Files": {
+      "main": [
+        [
+          {
+            "node": "Pipeline A: Demo → v1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pipeline A: Demo → v1": {
+      "main": [
+        [
+          {
+            "node": "Pipeline B: Onboarding → v2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pipeline B: Onboarding → v2": {
+      "main": [
+        [
+          {
+            "node": "List Generated Accounts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "List Generated Accounts": {
+      "main": [
+        [
+          {
+            "node": "Pipeline Complete",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "tags": [
+    {
+      "name": "clara-pipeline"
+    }
+  ],
+  "pinData": {}
+}
