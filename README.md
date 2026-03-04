@@ -1,287 +1,313 @@
-# Clara Answers Automation Pipeline
+# Clara Pipeline - AI Phone Agent Configuration System
 
-**Zero-cost automation: Demo Call → Retell Agent → Onboarding Updates**
+🤖 **Automated business rule extraction and AI phone agent configuration from call transcripts**
 
-This pipeline automatically processes call transcripts and generates AI phone agent configurations for Retell.
+## Overview
 
----
+Clara Pipeline transforms unstructured sales and onboarding call transcripts into structured AI phone agent configurations. The system processes demo calls to create initial agent setups (v1) and onboarding calls to refine them (v2), automating 90% of phone service configuration.
 
-## 📋 What This Does
+## 🏗️ Architecture
 
 ```
-INPUT                           OUTPUT
-─────                           ──────
-Demo Call Transcript      →     v1 Account Memo + Retell Agent Config
-Onboarding Transcript     →     v2 Account Memo + Updated Agent + Changelog
+Demo Call → AI Extraction → v1 Agent Config
+                ↓
+Onboarding Call → AI Updates → v2 Agent Config → MongoDB Storage
 ```
 
-### Pipeline A: Demo → Agent v1
-- Reads demo call transcript
-- Extracts business info (hours, services, contacts, emergency rules)
-- Generates Retell agent configuration with system prompt
-
-### Pipeline B: Onboarding → Agent v2
-- Reads onboarding call transcript
-- Finds updates/changes from the original setup
-- Creates v2 with changelog showing what changed
-
----
+**Components:**
+- **FastAPI**: REST API server for processing
+- **MongoDB**: Configuration data storage  
+- **n8n**: Workflow orchestration
+- **Groq LLM**: AI extraction via LangChain
+- **Docker**: Containerized deployment
 
 ## 🚀 Quick Start
 
 ### Prerequisites
-1. **Docker Desktop** - [Download here](https://www.docker.com/products/docker-desktop/)
-2. **Groq API Key** (FREE) - [Get one here](https://console.groq.com/keys)
+- Docker & Docker Compose
+- Groq API key ([get one here](https://console.groq.com/))
 
-### Setup (5 minutes)
-
+### 1. Clone & Configure
 ```bash
-# 1. Navigate to project folder
+git clone <repository>
 cd project
 
-# 2. Create your .env file
-cp .env.example .env
-
-# 3. Add your Groq API key to .env
-# Edit .env and replace gsk_your_key_here with your actual key
-
-# 4. Start Docker Desktop (make sure it's running!)
-
-# 5. Start the containers
-docker compose up -d --build
-
-# 6. Wait for services to be ready (~30 seconds)
-# Check: docker compose ps
+# Set your Groq API key
+echo "GROQ_API_KEY=your_key_here" > .env
 ```
 
-### Run via n8n (Recommended)
-
-1. Open n8n: http://localhost:5678
-2. Import workflow: `workflows/full_pipeline.json`
-3. Click "Execute Workflow"
-4. Check outputs in `outputs/accounts/`
-
-### Run via CLI (Alternative)
-
+### 2. Start Services
 ```bash
-# Full pipeline
-docker compose exec api python main.py
-
-# Or individual steps
-docker compose exec api python main.py demo      # Pipeline A only
-docker compose exec api python main.py onboard   # Pipeline B only
+docker-compose up -d
 ```
 
-### API Endpoints (for n8n)
+This starts:
+- **API Server**: http://localhost:8000
+- **MongoDB**: localhost:27017 (admin/password)
+- **n8n Workflows**: http://localhost:5678
 
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/health` | GET | Health check |
-| `/pipeline/demo` | POST | Run Pipeline A (all demos) |
-| `/pipeline/onboarding` | POST | Run Pipeline B (all onboarding) |
-| `/pipeline/full` | POST | Run full pipeline |
-| `/accounts` | GET | List processed accounts |
-| `/accounts/{id}/diff` | GET | View v1 vs v2 changes |
-
----
-
-## 📁 Project Structure
-
-```
-project/
-├── dataset/
-│   ├── demo/                    # 5 demo call transcripts
-│   │   ├── ace_plumbing_demo.txt
-│   │   └── ...
-│   └── onboarding/              # 5 onboarding transcripts
-│       ├── ace_plumbing_onboarding.txt
-│       └── ...
-│
-├── outputs/
-│   └── accounts/
-│       └── {account_id}/
-│           ├── v1/              # Initial configuration
-│           │   ├── account_memo.json
-│           │   ├── retell_agent_spec.json
-│           │   └── RETELL_IMPORT_GUIDE.md
-│           └── v2/              # Updated after onboarding
-│               ├── account_memo.json
-│               ├── changelog.json
-│               └── RETELL_IMPORT_GUIDE.md
-│
-├── src/                         # Core source code
-│   ├── __init__.py
-│   ├── api.py                   # FastAPI server (n8n calls this)
-│   ├── config.py                # Configuration & environment
-│   ├── schemas.py               # Pydantic models for LLM output
-│   ├── utils.py                 # File operations & helpers
-│   ├── extractors/              # LLM extraction modules
-│   │   ├── __init__.py
-│   │   ├── demo.py              # Pipeline A: Demo call → v1
-│   │   └── onboarding.py        # Pipeline B: Onboarding → v2
-│   └── generators/              # Agent spec generation
-│       ├── __init__.py
-│       └── agent_spec.py        # Retell config generator
-│
-├── workflows/                   # n8n workflow exports
-│   ├── full_pipeline.json       # Complete pipeline (recommended)
-│   ├── demo_pipeline.json       # Pipeline A only
-│   └── onboarding_pipeline.json # Pipeline B only
-│
-├── main.py                      # CLI pipeline runner
-├── Dockerfile                   # Python API container
-├── docker-compose.yml           # n8n + API orchestration
-├── requirements.txt             # Python dependencies
-├── pyproject.toml               # Project configuration
-├── docker-compose.yml           # Docker configuration
-└── .env.example                 # Environment template
-```
-
----
-
-## 🎯 Running the Pipeline
-
-### Option 1: Run Everything
+### 3. Verify Setup
 ```bash
-docker exec -it project-python-1 python main.py
+# Check API health
+curl http://localhost:8000/health
+
+# Check database
+curl http://localhost:8000/db/health
+
+# List any existing accounts
+curl http://localhost:8000/db/accounts
 ```
 
-### Option 2: Run Steps Individually
+## 📋 Usage
+
+### Processing Demo Calls (Create v1)
+
+**Via API:**
 ```bash
-# Only process demo calls
-docker exec -it project-python-1 python main.py demo
-
-# Only process onboarding calls (requires demo to run first)
-docker exec -it project-python-1 python main.py onboard
-
-# Only generate agent specs
-docker exec -it project-python-1 python main.py agents
+curl -X POST http://localhost:8000/pipeline/process/demo \
+  -H "Content-Type: application/json" \
+  -d '{
+    "account_id": "ace_plumbing",
+    "transcript": "Demo call transcript text here..."
+  }'
 ```
 
-### Option 3: Use n8n (Visual Automation)
-1. Open http://localhost:5678
-2. Import `workflows/demo_pipeline.json`
-3. Click "Execute Workflow"
+**Via n8n Workflow:**  
+POST to `http://localhost:5678/webhook/demo-pipeline`
 
----
+### Processing Onboarding Calls (Update to v2)
 
-## 📊 Output Files Explained
+**Via API:**
+```bash
+curl -X POST http://localhost:8000/pipeline/process/onboarding \
+  -H "Content-Type: application/json" \
+  -d '{
+    "account_id": "ace_plumbing", 
+    "transcript": "Onboarding call transcript...",
+    "v1_memo": null
+  }'
+```
 
-### account_memo.json
-Structured business data extracted from transcript:
+**Via n8n Workflow:**  
+POST to `http://localhost:5678/webhook/onboarding-pipeline`
+
+### Full Pipeline (Demo → Onboarding)
+
+POST to `http://localhost:5678/webhook/full-pipeline` with:
+```json
+{
+  "account_id": "company_name",
+  "demo_transcript": "Demo call text...",
+  "onboarding_transcript": "Onboarding call text..." 
+}
+```
+
+## 🔌 API Endpoints
+
+### Pipeline Processing
+- `POST /pipeline/process/demo` - Process demo calls → v1
+- `POST /pipeline/process/onboarding` - Process onboarding → v2  
+- `GET /pipeline/health` - Check pipeline status
+
+### Database Operations
+- `GET /db/accounts` - List all accounts
+- `GET /db/accounts/{id}?version=v1|v2` - Get account data
+- `GET /db/accounts/{id}/memo?version=v1|v2` - Get account memo only
+- `POST /db/save` - Save account data (used by workflows)
+- `DELETE /db/accounts/{id}?version=v1|v2` - Delete account
+- `GET /db/health` - Check MongoDB connection
+
+### System Health
+- `GET /health` - Overall system health
+
+## 📁 Data Structure
+
+### Generated Files (per account)
+```
+outputs/accounts/{account_id}/
+├── v1/                          # Demo processing results
+│   ├── account_memo.json        # Business configuration
+│   ├── retell_agent_spec.json   # AI agent specification  
+│   └── raw_extraction.json      # Raw AI extraction
+└── v2/                          # Onboarding processing results
+    ├── account_memo.json        # Updated configuration
+    ├── retell_agent_spec.json   # Updated agent spec
+    ├── changelog.json           # v1→v2 changes
+    └── raw_updates.json         # Raw update extraction
+```
+
+### Sample Account Memo Structure
 ```json
 {
   "account_id": "ace_plumbing",
   "company_name": "ACE Plumbing Services",
   "business_hours": {
     "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-    "start": "8:00 AM",
+    "start": "8:00 AM", 
     "end": "6:00 PM",
     "timezone": "EST"
   },
-  "services_supported": ["plumbing", "drain cleaning", "water heater repair"],
-  "emergency_definition": ["major water leak", "burst pipe", "flooding"],
+  "services_supported": ["residential plumbing", "drain cleaning"],
+  "emergency_definition": ["major water leaks", "burst pipes"],
   "emergency_routing_rules": {
     "primary_contact": "404-555-1234",
-    "fallback_contacts": ["404-555-5678"]
-  }
+    "fallback_contacts": ["404-555-5678"],
+    "timeout_seconds": 30
+  },
+  "integration_constraints": ["Do not offer: pool plumbing"],
+  "special_instructions": ["ask for caller's address"],
+  "service_area": "greater Atlanta metro area"
 }
 ```
 
-### retell_agent_spec.json
-Ready-to-use Retell agent configuration with complete system prompt.
+## 📊 Database Storage
 
-### changelog.json (v2 only)
-Shows exactly what changed between v1 and v2:
-```json
-{
-  "transition": "v1 → v2",
-  "summary": "Extended hours, added new services, updated emergency contact",
-  "changes": [
-    {
-      "field": "Business Hours",
-      "old_value": "8 AM - 6 PM",
-      "new_value": "7 AM - 7 PM"
-    }
-  ]
-}
+All data is stored in MongoDB with identical structure to output files:
+
+**Database Collections:**
+- `accounts` - Account configurations with versions
+
+**Query Examples:**
+```bash
+# List all accounts
+curl http://localhost:8000/db/accounts
+
+# Get v1 configuration  
+curl "http://localhost:8000/db/accounts/ace_plumbing?version=v1"
+
+# Get v2 configuration
+curl "http://localhost:8000/db/accounts/ace_plumbing?version=v2"
+
+# Get just the business rules memo
+curl "http://localhost:8000/db/accounts/ace_plumbing/memo?version=v2"
 ```
 
----
+## 🛠️ Development
+
+### Project Structure
+```
+src/
+├── api/routers/          # FastAPI endpoints
+│   ├── accounts.py       # Account management  
+│   ├── pipeline.py       # Processing endpoints
+│   ├── dataset.py        # Dataset operations
+│   └── db.py            # Database operations
+├── extractors/          # AI processing modules
+│   ├── demo.py          # Demo call processing
+│   └── onboarding.py    # Onboarding call processing
+├── generators/          # Output generation
+│   └── agent_spec.py    # Retell agent spec generation
+├── db/                  # Database layer
+│   └── __init__.py      # MongoDB operations
+├── config.py            # Configuration
+├── schemas.py           # Pydantic models
+└── utils.py             # Utilities
+
+workflows/               # n8n workflow definitions
+├── demo_pipeline.json
+├── onboarding_pipeline.json  
+└── full_pipeline.json
+
+dataset/                 # Sample transcripts
+├── demo/               # Demo call transcripts
+└── onboarding/         # Onboarding call transcripts
+```
+
+### Local Development
+```bash
+# Install dependencies
+pip install -r requirements.txt
+pip install -e .
+
+# Start services
+docker-compose up -d mongodb n8n
+python -m uvicorn src.api:app --reload --host 0.0.0.0 --port 8000
+
+# Run tests (if available)
+pytest
+```
+
+### Adding New Accounts
+1. Add demo transcript to `dataset/demo/{account_id}_demo.txt`  
+2. Add onboarding transcript to `dataset/onboarding/{account_id}_onboarding.txt`
+3. Process via API or workflows
 
 ## 🔧 Configuration
 
-### Environment Variables (.env)
+### Environment Variables
 ```bash
-GROQ_API_KEY=gsk_your_key_here  # Required - free from console.groq.com
-RETELL_API_KEY=                  # Optional - for future API integration
+# Required
+GROQ_API_KEY=your_groq_api_key
+
+# Optional (defaults shown)
+GROQ_MODEL=llama3-70b-8192
+MONGODB_URI=mongodb://admin:password@mongodb:27017/
+MONGODB_DATABASE=clara
+LOG_LEVEL=INFO
 ```
 
-### Adding Your Own Transcripts
-1. Put demo call transcripts in `dataset/demo/` as `.txt` files
-2. Put onboarding transcripts in `dataset/onboarding/` as `.txt` files
-3. Name files: `{company_name}_demo.txt` and `{company_name}_onboarding.txt`
-4. Run the pipeline
-
----
-
-## 🏆 Zero-Cost Stack
-
-| Component | Tool | Cost |
-|-----------|------|------|
-| LLM | Groq (Llama 3.1) | FREE |
-| Orchestration | n8n (self-hosted) | FREE |
-| Storage | Local JSON files | FREE |
-| Runtime | Docker containers | FREE |
-
----
-
-## ⚠️ Troubleshooting
-
-### "Docker daemon not running"
-→ Start Docker Desktop and wait for it to fully start
-
-### "GROQ_API_KEY not found"
-→ Create `.env` file with your API key (copy from `.env.example`)
-
-### "No v1 memo found"
-→ Run demo pipeline first before onboarding: `python main.py demo`
-
-### Containers not starting
+### MongoDB Access
 ```bash
-docker compose down
-docker compose up -d
-docker compose logs
+# Connect to MongoDB directly
+docker exec -it mongodb mongosh -u admin -p password --authenticationDatabase admin
+
+# Use Clara database
+use clara
+
+# List accounts
+db.accounts.find()
+
+# Query specific account
+db.accounts.find({"account_id": "ace_plumbing", "version": "v2"})
 ```
 
+## 🚨 Troubleshooting
+
+### Common Issues
+
+**MongoDB Connection Errors:**
+```bash
+# Remove old volumes and restart
+docker-compose down -v
+docker-compose up -d
+```
+
+**API Errors:**
+```bash
+# Check logs
+docker-compose logs api
+
+# Rebuild API container
+docker-compose up -d --build api
+```
+
+**n8n Workflow Issues:**
+- Ensure webhooks are activated in n8n interface
+- Check workflow execution logs in n8n UI
+- Verify API endpoints are accessible from n8n container
+
+### Logs
+```bash
+# View all logs
+docker-compose logs -f
+
+# View specific service logs  
+docker-compose logs api
+docker-compose logs mongodb
+docker-compose logs n8n
+```
+
+## 📈 Scaling Considerations
+
+- **MongoDB**: Configure replica sets for production
+- **API**: Use multiple containers behind load balancer  
+- **n8n**: Scale workflow instances for high throughput
+- **AI Processing**: Consider Groq rate limits and batch processing
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
 ---
 
-## 📝 Assignment Compliance
-
-✅ **Zero spend** - All free-tier tools  
-✅ **Reproducible** - Docker + clear instructions  
-✅ **5 demo + 5 onboarding** - Sample dataset included  
-✅ **Account Memo JSON** - Complete structure  
-✅ **Retell Agent Spec** - With system prompt  
-✅ **Versioning (v1→v2)** - Changelog included  
-✅ **n8n Workflow** - Exportable JSON  
-✅ **Documentation** - You're reading it!
-
----
-
-## 🎬 Demo Video Checklist
-
-For your 3-5 minute Loom video, show:
-1. [ ] Pipeline running on 1 demo + 1 onboarding pair
-2. [ ] Generated outputs (memo, agent spec)
-3. [ ] Changelog showing v1 → v2 differences
-4. [ ] How to import agent into Retell (manual steps)
-
----
-
-## 📧 Support
-
-For questions about this implementation, check:
-1. The troubleshooting section above
-2. Container logs: `docker compose logs`
-3. Output files in `outputs/accounts/`
+**Clara Pipeline** - Transforming conversations into configurations 🎯
