@@ -1,34 +1,37 @@
+version: "3.9"
+
 services:
-  # n8n - Workflow Orchestrator
-  n8n:
-    image: n8nio/n8n:latest
+  # MongoDB - Database
+  mongodb:
+    image: mongo:7.0
+    container_name: mongodb
     restart: always
     ports:
-      - "5678:5678"
+      - "27017:27017"
     environment:
-      - N8N_BASIC_AUTH_ACTIVE=false
-      - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=false
-      - WEBHOOK_URL=http://localhost:5678
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME:-admin}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD:-password}
     volumes:
-      - n8n_data:/home/node/.n8n
-      - ./outputs:/data/outputs:ro
-    depends_on:
-      api:
-        condition: service_healthy
+      - mongodb_data:/data/db
 
   # Python API - Processing Engine
   api:
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: api
     restart: always
     ports:
       - "8000:8000"
     environment:
-      - GROQ_API_KEY=${GROQ_API_KEY}
+      GROQ_API_KEY: ${GROQ_API_KEY}
+      MONGODB_URI: mongodb://${MONGO_USERNAME:-admin}:${MONGO_PASSWORD:-password}@mongodb:27017/clara?authSource=admin
+      MONGODB_DATABASE: clara
     volumes:
       - ./dataset:/app/dataset:ro
       - ./outputs:/app/outputs
+    depends_on:
+      - mongodb
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 10s
@@ -36,5 +39,23 @@ services:
       retries: 3
       start_period: 30s
 
+  # n8n - Workflow Orchestrator
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: n8n
+    restart: always
+    ports:
+      - "5678:5678"
+    environment:
+      N8N_BASIC_AUTH_ACTIVE: "false"
+      N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS: "false"
+      WEBHOOK_URL: http://localhost:5678
+    volumes:
+      - n8n_data:/home/node/.n8n
+      - ./outputs:/data/outputs:ro
+    depends_on:
+      - api
+
 volumes:
+  mongodb_data:
   n8n_data:
