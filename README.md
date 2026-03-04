@@ -15,8 +15,9 @@ Onboarding Call → AI Updates → v2 Agent Config → MongoDB Storage
 ```
 
 **Components:**
+
 - **FastAPI**: REST API server for processing
-- **MongoDB**: Configuration data storage  
+- **MongoDB**: Configuration data storage
 - **n8n**: Workflow orchestration
 - **Groq LLM**: AI extraction via LangChain
 - **Docker**: Containerized deployment
@@ -24,10 +25,12 @@ Onboarding Call → AI Updates → v2 Agent Config → MongoDB Storage
 ## 🚀 Quick Start
 
 ### Prerequisites
+
 - Docker & Docker Compose
 - Groq API key ([get one here](https://console.groq.com/))
 
 ### 1. Clone & Configure
+
 ```bash
 git clone <repository>
 cd project
@@ -37,16 +40,19 @@ echo "GROQ_API_KEY=your_key_here" > .env
 ```
 
 ### 2. Start Services
+
 ```bash
 docker-compose up -d
 ```
 
 This starts:
+
 - **API Server**: http://localhost:8000
 - **MongoDB**: localhost:27017 (admin/password)
 - **n8n Workflows**: http://localhost:5678
 
 ### 3. Verify Setup
+
 ```bash
 # Check API health
 curl http://localhost:8000/health
@@ -63,6 +69,7 @@ curl http://localhost:8000/db/accounts
 ### Processing Demo Calls (Create v1)
 
 **Via API:**
+
 ```bash
 curl -X POST http://localhost:8000/pipeline/process/demo \
   -H "Content-Type: application/json" \
@@ -72,12 +79,13 @@ curl -X POST http://localhost:8000/pipeline/process/demo \
   }'
 ```
 
-**Via n8n Workflow:**  
+**Via n8n Workflow:**
 POST to `http://localhost:5678/webhook/demo-pipeline`
 
 ### Processing Onboarding Calls (Update to v2)
 
 **Via API:**
+
 ```bash
 curl -X POST http://localhost:8000/pipeline/process/onboarding \
   -H "Content-Type: application/json" \
@@ -88,12 +96,13 @@ curl -X POST http://localhost:8000/pipeline/process/onboarding \
   }'
 ```
 
-**Via n8n Workflow:**  
+**Via n8n Workflow:**
 POST to `http://localhost:5678/webhook/onboarding-pipeline`
 
 ### Full Pipeline (Demo → Onboarding)
 
 POST to `http://localhost:5678/webhook/full-pipeline` with:
+
 ```json
 {
   "account_id": "company_name",
@@ -105,11 +114,13 @@ POST to `http://localhost:5678/webhook/full-pipeline` with:
 ## 🔌 API Endpoints
 
 ### Pipeline Processing
+
 - `POST /pipeline/process/demo` - Process demo calls → v1
-- `POST /pipeline/process/onboarding` - Process onboarding → v2  
+- `POST /pipeline/process/onboarding` - Process onboarding → v2
 - `GET /pipeline/health` - Check pipeline status
 
 ### Database Operations
+
 - `GET /db/accounts` - List all accounts
 - `GET /db/accounts/{id}?version=v1|v2` - Get account data
 - `GET /db/accounts/{id}/memo?version=v1|v2` - Get account memo only
@@ -118,11 +129,13 @@ POST to `http://localhost:5678/webhook/full-pipeline` with:
 - `GET /db/health` - Check MongoDB connection
 
 ### System Health
+
 - `GET /health` - Overall system health
 
 ## 📁 Data Structure
 
 ### Generated Files (per account)
+
 ```
 outputs/accounts/{account_id}/
 ├── v1/                          # Demo processing results
@@ -137,6 +150,7 @@ outputs/accounts/{account_id}/
 ```
 
 ### Sample Account Memo Structure
+
 ```json
 {
   "account_id": "ace_plumbing",
@@ -165,9 +179,11 @@ outputs/accounts/{account_id}/
 All data is stored in MongoDB with identical structure to output files:
 
 **Database Collections:**
+
 - `accounts` - Account configurations with versions
 
 **Query Examples:**
+
 ```bash
 # List all accounts
 curl http://localhost:8000/db/accounts
@@ -185,6 +201,7 @@ curl "http://localhost:8000/db/accounts/ace_plumbing/memo?version=v2"
 ## 🛠️ Development
 
 ### Project Structure
+
 ```
 src/
 ├── api/routers/          # FastAPI endpoints
@@ -214,6 +231,7 @@ dataset/                 # Sample transcripts
 ```
 
 ### Local Development
+
 ```bash
 # Install dependencies
 pip install -r requirements.txt
@@ -228,25 +246,27 @@ pytest
 ```
 
 ### Adding New Accounts
-1. Add demo transcript to `dataset/demo/{account_id}_demo.txt`  
+
+1. Add demo transcript to `dataset/demo/{account_id}_demo.txt`
 2. Add onboarding transcript to `dataset/onboarding/{account_id}_onboarding.txt`
 3. Process via API or workflows
 
 ## 🔧 Configuration
 
 ### Environment Variables
+
 ```bash
 # Required
 GROQ_API_KEY=your_groq_api_key
+# OPTIONAL: Webhook configuration
+WEBHOOK_BASE_URL=http://localhost:5678/webhook
+MONGO_USERNAME=admin
+MONGO_PASSWORD=password
 
-# Optional (defaults shown)
-GROQ_MODEL=llama3-70b-8192
-MONGODB_URI=mongodb://admin:password@mongodb:27017/
-MONGODB_DATABASE=agent
-LOG_LEVEL=INFO
 ```
 
 ### MongoDB Access
+
 ```bash
 # Connect to MongoDB directly
 docker exec -it mongodb mongosh -u admin -p password --authenticationDatabase admin
@@ -266,6 +286,7 @@ db.accounts.find({"account_id": "ace_plumbing", "version": "v2"})
 ### Common Issues
 
 **MongoDB Connection Errors:**
+
 ```bash
 # Remove old volumes and restart
 docker-compose down -v
@@ -273,6 +294,7 @@ docker-compose up -d
 ```
 
 **API Errors:**
+
 ```bash
 # Check logs
 docker-compose logs api
@@ -282,11 +304,13 @@ docker-compose up -d --build api
 ```
 
 **n8n Workflow Issues:**
+
 - Ensure webhooks are activated in n8n interface
 - Check workflow execution logs in n8n UI
 - Verify API endpoints are accessible from n8n container
 
 ### Logs
+
 ```bash
 # View all logs
 docker-compose logs -f
@@ -300,7 +324,7 @@ docker-compose logs n8n
 ## 📈 Scaling Considerations
 
 - **MongoDB**: Configure replica sets for production
-- **API**: Use multiple containers behind load balancer  
+- **API**: Use multiple containers behind load balancer
 - **n8n**: Scale workflow instances for high throughput
 - **AI Processing**: Consider Groq rate limits and batch processing
 
