@@ -2,6 +2,14 @@
 
 🤖 **Automated business rule extraction and AI phone agent configuration from call transcripts**
 
+![1772655645075](image/README/1772655645075.png)
+
+## 🎬 Demo Video
+
+[![Watch the Demo](https://img.youtube.com/vi/SqSXr9HKG0w/maxresdefault.jpg)](https://youtu.be/SqSXr9HKG0w)
+
+▶️ [Watch the full demo on YouTube](https://youtu.be/SqSXr9HKG0w)
+
 ## Overview
 
 Agent Pipeline transforms unstructured sales and onboarding call transcripts into structured AI phone agent configurations. The system processes demo calls to create initial agent setups (v1) and onboarding calls to refine them (v2), automating 90% of phone service configuration.
