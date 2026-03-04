@@ -32,7 +32,9 @@ EXTRACTION_PROMPT = ChatPromptTemplate.from_messages([
 Extract ONLY information explicitly stated in the transcript.
 Do NOT guess or make up any information.
 If something is not mentioned, leave it as empty string or empty array.
-Be precise with phone numbers, addresses, and times.""",
+Be precise with phone numbers, addresses, and times.
+
+IMPORTANT: All string fields MUST be plain text strings, NOT objects or nested structures.""",
     ),
     (
         "human",
@@ -43,10 +45,10 @@ Be precise with phone numbers, addresses, and times.""",
 Extract all relevant details about the company including:
 - Company name
 - Business hours (days, start time, end time, timezone)
-- Office address
+- Office address  
 - Services they offer and services they explicitly do NOT offer
-- Emergency definitions and contacts
-- After hours instructions
+- Emergency definitions and contacts (phone numbers, timeout)
+- non_emergency_after_hours_action: A SIMPLE STRING describing what to do for non-emergency calls after hours (e.g. "Take a message with name and number")
 - Service area
 - Any special instructions or constraints""",
     ),
@@ -95,7 +97,7 @@ class DemoExtractor:
             },
             "non_emergency_routing_rules": {
                 "business_hours_action": "Transfer to main office",
-                "after_hours_action": extracted.after_hours_instructions or "Take message",
+                "after_hours_action": extracted.non_emergency_after_hours_action or "Take message",
             },
             "call_transfer_rules": {
                 "main_office_number": extracted.main_office_number,
