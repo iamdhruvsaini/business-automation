@@ -5,41 +5,49 @@
 
 set -e
 
-echo "🤖 Agent Pipeline Setup"
-echo "======================"
+echo "[Agent Pipeline Setup]"
+echo "======================="
 
 # Check prerequisites
-echo "📋 Checking prerequisites..."
+echo "[INFO] Checking prerequisites..."
 
 # Check Docker
 if ! command -v docker &> /dev/null; then
-    echo "❌ Docker is not installed. Please install Docker Desktop first:"
+    echo "[ERROR] Docker is not installed. Please install Docker Desktop first:"
     echo "   https://www.docker.com/products/docker-desktop/"
     exit 1
 fi
 
 # Check Docker Compose
 if ! command -v docker-compose &> /dev/null && ! docker compose version &> /dev/null; then
-    echo "❌ Docker Compose is not available. Please install Docker Desktop which includes Compose."
+    echo "[ERROR] Docker Compose is not available. Please install Docker Desktop which includes Compose."
     exit 1
 fi
 
-echo "✅ Docker is installed"
+echo "[OK] Docker is installed"
 
 # Check if Docker is running
 if ! docker info &> /dev/null; then
-    echo "❌ Docker is not running. Please start Docker Desktop first."
+    echo "[ERROR] Docker is not running. Please start Docker Desktop first."
     exit 1
 fi
 
-echo "✅ Docker is running"
+echo "[OK] Docker is running"
+
+# Check Python environment setup for Docker development
+echo ""
+echo "[INFO] Setting up Python environment for Docker development..."
+echo "[INFO] You can use the following commands inside Docker containers:"
+echo "   - pip install -r requirements.txt"
+echo "   - uv sync (if using uv for dependency management)"
+echo "   - python -m venv venv && source venv/bin/activate (for local venv)"
 
 # Check for .env file and GROQ_API_KEY
 echo ""
-echo "🔑 Checking API key configuration..."
+echo "[INFO] Checking API key configuration..."
 
 if [[ ! -f .env ]]; then
-    echo "⚠️  No .env file found. Creating one..."
+    echo "[WARN] No .env file found. Creating one..."
     cat > .env << 'EOF'
 # Agent Pipeline Configuration
 GROQ_API_KEY=your_groq_key_here
@@ -50,12 +58,12 @@ MONGODB_URI=mongodb://admin:password@mongodb:27017/
 MONGODB_DATABASE=agent
 LOG_LEVEL=INFO
 EOF
-    echo "📝 Created .env file"
+    echo "[OK] Created .env file"
 fi
 
 if grep -q "your_groq_key_here" .env || ! grep -q "GROQ_API_KEY=" .env || grep -q "GROQ_API_KEY=$" .env; then
     echo ""
-    echo "❌ GROQ_API_KEY not configured properly"
+    echo "[ERROR] GROQ_API_KEY not configured properly"
     echo ""
     echo "Please get your free Groq API key:"
     echo "1. Visit: https://console.groq.com/"
@@ -75,21 +83,33 @@ if grep -q "your_groq_key_here" .env || ! grep -q "GROQ_API_KEY=" .env || grep -
         sed -i "s/GROQ_API_KEY=.*/GROQ_API_KEY=$groq_key/" .env
     fi
     
-    echo "✅ API key saved to .env file"
+    echo "[OK] API key saved to .env file"
 fi
 
-echo "✅ API key is configured"
+echo "[OK] API key is configured"
 
 # Start services
 echo ""
-echo "🚀 Starting Agent Pipeline services..."
+echo "[INFO] Starting Agent Pipeline services..."
 echo "This may take a few minutes on first run..."
+
+# Install Python dependencies if requirements.txt exists
+if [ -f "requirements.txt" ]; then
+    echo "[INFO] Installing Python dependencies..."
+    echo "[CMD] pip install -r requirements.txt"
+fi
+
+# Check for uv and sync dependencies
+if [ -f "pyproject.toml" ]; then
+    echo "[INFO] pyproject.toml found - you can use uv for dependency management"
+    echo "[CMD] uv sync"
+fi
 
 docker-compose down > /dev/null 2>&1 || true
 docker-compose up -d
 
 echo ""
-echo "⏳ Waiting for services to start..."
+echo "[INFO] Waiting for services to start..."
 
 # Wait for API to be ready
 max_attempts=30
@@ -106,47 +126,53 @@ done
 echo ""
 
 if [ $attempt -eq $max_attempts ]; then
-    echo "❌ API failed to start within 60 seconds"
+    echo "[ERROR] API failed to start within 60 seconds"
     echo "Check logs with: docker-compose logs api"
     exit 1
 fi
 
 # Test services
-echo "🧪 Testing services..."
+echo "[INFO] Testing services..."
 
 # Test API
 api_response=$(curl -s http://localhost:8000/health || echo "failed")
 if [[ $api_response == *"healthy"* ]]; then
-    echo "✅ API Server: http://localhost:8000"
+    echo "[OK] API Server: http://localhost:8000"
 else
-    echo "❌ API Server: Failed to respond"
+    echo "[ERROR] API Server: Failed to respond"
 fi
 
 # Test Database
 db_response=$(curl -s http://localhost:8000/db/health || echo "failed")
 if [[ $db_response == *"healthy"* ]]; then
-    echo "✅ MongoDB: Connected"
+    echo "[OK] MongoDB: Connected"
 else
-    echo "⚠️  MongoDB: Check connection"
+    echo "[WARN] MongoDB: Check connection"
 fi
 
 # Check n8n
 if curl -s http://localhost:5678 > /dev/null 2>&1; then
-    echo "✅ n8n Workflows: http://localhost:5678"
+    echo "[OK] n8n Workflows: http://localhost:5678"
 else
-    echo "⚠️  n8n Workflows: Starting up..."
+    echo "[WARN] n8n Workflows: Starting up..."
 fi
 
 echo ""
-echo "🎉 Setup complete!"
+echo "[SUCCESS] Setup complete!"
 echo ""
-echo "📚 Quick Commands:"
+echo "[Commands] Quick Commands:"
 echo "   API Docs:     http://localhost:8000/docs"
 echo "   n8n Flows:    http://localhost:5678"
 echo "   View Logs:    docker-compose logs -f"
 echo "   Stop All:     docker-compose down"
 echo ""
-echo "🔥 Test with sample data:"
+echo "[Python] Development Commands:"
+echo "   Connect to container: docker exec -it project-api-1 bash"
+echo "   Install deps:         pip install -r requirements.txt"
+echo "   UV sync:             uv sync"
+echo "   Activate venv:        source venv/bin/activate"
+echo ""
+echo "[Test] Test with sample data:"
 echo "   curl -X POST http://localhost:8000/pipeline/process-all/demo"
 echo ""
-echo "📖 Full documentation in README.md"
+echo "[Docs] Full documentation in README.md"
