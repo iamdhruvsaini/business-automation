@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   # MongoDB - Database
   mongodb:
@@ -25,8 +23,8 @@ services:
       - "8000:8000"
     environment:
       GROQ_API_KEY: ${GROQ_API_KEY}
-      MONGODB_URI: mongodb://${MONGO_USERNAME:-admin}:${MONGO_PASSWORD:-password}@mongodb:27017/clara?authSource=admin
-      MONGODB_DATABASE: clara
+      MONGODB_URI: mongodb://${MONGO_USERNAME:-admin}:${MONGO_PASSWORD:-password}@mongodb:27017/agent?authSource=admin
+      MONGODB_DATABASE: agent
     volumes:
       - ./dataset:/app/dataset:ro
       - ./outputs:/app/outputs

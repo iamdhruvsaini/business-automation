@@ -1,5 +1,5 @@
 """
-Clara Pipeline API
+Agent Pipeline API
 ==================
 FastAPI application with modular routers.
 
@@ -16,7 +16,7 @@ from src.api.routers import (
 )
 
 app = FastAPI(
-    title="Clara Pipeline API",
+    title="Agent Pipeline API",
     description="n8n-orchestrated automation pipeline for Retell agent generation",
     version="0.1.0",
 )
@@ -33,7 +33,7 @@ app.include_router(db_router)
 async def root():
     """Root endpoint with API info."""
     return {
-        "name": "Clara Pipeline API",
+        "name": "Agent Pipeline API",
         "version": "0.1.0",
         "docs": "/docs",
         "endpoints": {

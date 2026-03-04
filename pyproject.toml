@@ -1,5 +1,5 @@
 [project]
-name = "clara-automation"
+name = "agent-automation"
 version = "0.1.0"
 description = "Zero-cost automation pipeline: Demo Call -> Retell Agent Draft -> Onboarding Updates -> Agent Revision"
 readme = "README.md"
@@ -23,7 +23,7 @@ dev = [
 ]
 
 [project.scripts]
-clara = "main:main"
+agent = "main:main"
 
 [build-system]
 requires = ["hatchling"]

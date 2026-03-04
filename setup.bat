@@ -1,11 +1,11 @@
 @echo off
 setlocal enabledelayedexpansion
 
-REM Clara Pipeline Setup Script for Windows
-REM This script helps you set up Clara Pipeline quickly
+REM Agent Pipeline Setup Script for Windows
+REM This script helps you set up Agent Pipeline quickly
 
 echo.
-echo 🤖 Clara Pipeline Setup
+echo 🤖 Agent Pipeline Setup
 echo ======================
 
 REM Check prerequisites
@@ -50,13 +50,13 @@ echo 🔑 Checking API key configuration...
 if not exist .env (
     echo ⚠️  No .env file found. Creating one...
     (
-        echo # Clara Pipeline Configuration
+        echo # Agent Pipeline Configuration
         echo GROQ_API_KEY=your_groq_key_here
         echo.
         echo # Optional settings ^(defaults shown^)
         echo GROQ_MODEL=llama3-70b-8192
         echo MONGODB_URI=mongodb://admin:password@mongodb:27017/
-        echo MONGODB_DATABASE=clara
+        echo MONGODB_DATABASE=agent
         echo LOG_LEVEL=INFO
     ) > .env
     echo 📝 Created .env file
@@ -96,7 +96,7 @@ echo ✅ API key is configured
 
 REM Start services
 echo.
-echo 🚀 Starting Clara Pipeline services...
+echo 🚀 Starting Agent Pipeline services...
 echo This may take a few minutes on first run...
 
 docker-compose down >nul 2>&1

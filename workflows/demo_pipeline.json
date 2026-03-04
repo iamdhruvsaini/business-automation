@@ -1,5 +1,5 @@
 {
-  "name": "Clara Pipeline - Demo (Direct Input)",
+  "name": "Agent Pipeline - Demo (Direct Input)",
   "nodes": [
     {
       "parameters": {
@@ -102,7 +102,7 @@
   },
   "tags": [
     {
-      "name": "clara-pipeline"
+      "name": "agent-pipeline"
     }
   ],
   "pinData": {},

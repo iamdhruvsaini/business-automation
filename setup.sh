@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# Clara Pipeline Setup Script
-# This script helps you set up Clara Pipeline quickly
+# Agent Pipeline Setup Script
+# This script helps you set up Agent Pipeline quickly
 
 set -e
 
-echo "🤖 Clara Pipeline Setup"
+echo "🤖 Agent Pipeline Setup"
 echo "======================"
 
 # Check prerequisites
@@ -41,13 +41,13 @@ echo "🔑 Checking API key configuration..."
 if [[ ! -f .env ]]; then
     echo "⚠️  No .env file found. Creating one..."
     cat > .env << 'EOF'
-# Clara Pipeline Configuration
+# Agent Pipeline Configuration
 GROQ_API_KEY=your_groq_key_here
 
 # Optional settings (defaults shown)
 GROQ_MODEL=llama3-70b-8192
 MONGODB_URI=mongodb://admin:password@mongodb:27017/
-MONGODB_DATABASE=clara
+MONGODB_DATABASE=agent
 LOG_LEVEL=INFO
 EOF
     echo "📝 Created .env file"
@@ -82,7 +82,7 @@ echo "✅ API key is configured"
 
 # Start services
 echo ""
-echo "🚀 Starting Clara Pipeline services..."
+echo "🚀 Starting Agent Pipeline services..."
 echo "This may take a few minutes on first run..."
 
 docker-compose down > /dev/null 2>&1 || true

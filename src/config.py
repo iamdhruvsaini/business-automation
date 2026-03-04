@@ -31,8 +31,8 @@ GROQ_MODEL = "llama-3.1-8b-instant"
 
 # ============ MONGODB CONFIGURATION ============
 
-MONGODB_URI = os.getenv("MONGODB_URI", "mongodb://admin:password@localhost:27017/clara?authSource=admin")
-MONGODB_DATABASE = os.getenv("MONGODB_DATABASE", "clara")
+MONGODB_URI = os.getenv("MONGODB_URI", "mongodb://admin:password@localhost:27017/agent?authSource=admin")
+MONGODB_DATABASE = os.getenv("MONGODB_DATABASE", "agent")
 
 # ============ LOGGING ============
 
@@ -40,7 +40,7 @@ logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s"
 )
-logger = logging.getLogger("clara")
+logger = logging.getLogger("agent")
 
 
 def get_groq_api_key() -> str:

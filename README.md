@@ -1,10 +1,10 @@
-# Clara Pipeline - AI Phone Agent Configuration System
+# Agent Pipeline - AI Phone Agent Configuration System
 
 🤖 **Automated business rule extraction and AI phone agent configuration from call transcripts**
 
 ## Overview
 
-Clara Pipeline transforms unstructured sales and onboarding call transcripts into structured AI phone agent configurations. The system processes demo calls to create initial agent setups (v1) and onboarding calls to refine them (v2), automating 90% of phone service configuration.
+Agent Pipeline transforms unstructured sales and onboarding call transcripts into structured AI phone agent configurations. The system processes demo calls to create initial agent setups (v1) and onboarding calls to refine them (v2), automating 90% of phone service configuration.
 
 ## 🏗️ Architecture
 
@@ -242,7 +242,7 @@ GROQ_API_KEY=your_groq_api_key
 # Optional (defaults shown)
 GROQ_MODEL=llama3-70b-8192
 MONGODB_URI=mongodb://admin:password@mongodb:27017/
-MONGODB_DATABASE=clara
+MONGODB_DATABASE=agent
 LOG_LEVEL=INFO
 ```
 
@@ -251,8 +251,8 @@ LOG_LEVEL=INFO
 # Connect to MongoDB directly
 docker exec -it mongodb mongosh -u admin -p password --authenticationDatabase admin
 
-# Use Clara database
-use clara
+# Use Agent database
+use agent
 
 # List accounts
 db.accounts.find()
@@ -310,4 +310,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ---
 
-**Clara Pipeline** - Transforming conversations into configurations 🎯
+**Agent Pipeline** - Transforming conversations into configurations 🎯

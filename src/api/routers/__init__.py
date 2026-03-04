@@ -1,7 +1,7 @@
 """
 API Routers Package
 ===================
-Contains all FastAPI routers for the Clara Pipeline API.
+Contains all FastAPI routers for the Agent Pipeline API.
 """
 from src.api.routers.health import router as health_router
 from src.api.routers.pipeline import router as pipeline_router

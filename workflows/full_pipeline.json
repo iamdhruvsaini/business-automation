@@ -1,5 +1,5 @@
 {
-  "name": "Clara Pipeline - Full (Direct Input)",
+  "name": "Agent Pipeline - Full (Direct Input)",
   "nodes": [
     {
       "parameters": {
@@ -140,7 +140,7 @@
   },
   "active": false,
   "settings": { "executionOrder": "v1" },
-  "tags": [{ "name": "clara-pipeline" }],
+  "tags": [{ "name": "agent-pipeline" }],
   "pinData": {},
   "notes": "Full Pipeline: Demo → Save v1 → (if onboarding) Onboarding → Save v2\n\nPOST: { account_id, demo_transcript, onboarding_transcript? }"
 }
