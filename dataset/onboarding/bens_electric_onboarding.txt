@@ -1,0 +1,122 @@
+ONBOARDING CALL TRANSCRIPT - BEN'S ELECTRIC SOLUTIONS
+Date: January 2026 (Friday - Kickoff Call)
+Participants: Clara Onboarding Team, Ben Penoyer (Owner - Ben's Electric Solutions)
+
+---
+
+Agent: Hi Ben, this is your onboarding call for Ben's Electric Solutions. We've set up your initial agent configuration based on the demo call. I want to go through some details and see if anything needs to be updated.
+
+Ben: Sure, let's do it.
+
+Agent: First, let's confirm your business hours. What are your standard operating hours?
+
+Ben: We're open Monday through Friday, 8 AM to 5 PM Mountain Time. We're based in Calgary, Alberta.
+
+Agent: Got it. Monday to Friday, 8 AM to 5 PM Mountain Time. Do you take calls on weekends?
+
+Ben: Not typically for new customers. But for my regular property managers and general contractors, I'm available for emergencies.
+
+Agent: Let's talk about your emergency handling. You mentioned you're the one on call. What number should emergency calls be routed to?
+
+Ben: My cell is 403-555-0123. But I only want true emergency calls for my existing commercial clients to come through after hours. Random residential customers with emergencies should be told we're not equipped for emergency services and they should call another electrician.
+
+Agent: Understood. So for after-hours emergencies from known commercial clients like property managers, route to your cell. For unknown callers with emergencies, take a message and let them know you don't handle general emergency services. What about the gas station property manager you mentioned?
+
+Ben: Yeah, that's Priority Property Management. Their calls should always come straight through to me, day or night. They manage several gas stations and when pumps go down, it's urgent. Their main number is 403-555-7890.
+
+Agent: Perfect. I'll add them as a VIP contact that bypasses Clara entirely. Any other VIP contacts?
+
+Ben: Yeah, I've got about 5-6 general contractors I work with regularly. Let me give you those numbers:
+- ABC Construction: 403-555-1111
+- BuildRight Homes: 403-555-2222
+- Calgary Custom Builders: 403-555-3333
+These guys should ring through directly to me.
+
+Agent: Got it. Now let's confirm the services. You do residential and commercial electrical, EV chargers, hot tub hookups, panel changes, renovations, troubleshooting, custom homes, and tenant improvements. Correct?
+
+Ben: Yes, all of that. And one important thing - we do NOT do gemstone lights or permanent holiday lighting. We get calls for that sometimes and the answer is always no.
+
+Agent: Noted. Clara will politely decline gemstone/holiday lighting requests. What about generator installations?
+
+Ben: We can do generator hookups and transfer switches, yes. That's part of our service.
+
+Agent: For non-emergency calls after hours, what should Clara do?
+
+Ben: Take a message with their name, phone number, and what they need. Tell them we'll call back first thing in the morning, by 9 AM.
+
+Agent: What about the callback timeframe for messages taken during business hours if you can't answer?
+
+Ben: Same thing - we'll call back within 2 hours during business hours.
+
+Agent: Now about call transfers during business hours. If someone calls with a legitimate service request, should Clara try to transfer to you first?
+
+Ben: Yes, try to transfer to my cell first. If I don't answer within 30 seconds, take a message. Don't try multiple times - I'm probably on a job site or in a meeting.
+
+Agent: What's the main office number for the business?
+
+Ben: It's the same as my cell right now - 403-555-0123. We don't have a separate office line.
+
+Agent: One more thing - you mentioned your operations manager Greg is coming on board. Should we add him as a backup contact?
+
+Ben: Not yet. He's still training. Maybe in a month or two we can add him. For now, everything comes to me.
+
+Agent: Last question - any integration constraints? Things Clara should never say or do?
+
+Ben: Don't mention Jobber or any software by name. Just say we'll "schedule" or "note" their request. And never promise same-day service unless it's for one of my VIP commercial clients. We're usually booked out 3-5 days for residential work.
+
+Agent: Perfect. Let me summarize the key updates:
+- Business hours: Monday-Friday, 8 AM - 5 PM Mountain Time
+- After-hours emergency: Route known commercial clients to your cell (403-555-0123)
+- After-hours non-emergency: Take message, callback by 9 AM next business day
+- VIP bypass contacts: Priority Property Management, ABC Construction, BuildRight Homes, Calgary Custom Builders
+- Services NOT offered: Gemstone lights, permanent holiday lighting
+- Transfer timeout: 30 seconds, then take message
+- Callback timeframe: Within 2 hours during business hours
+- Never mention: Jobber, don't promise same-day service for residential
+
+Ben: That all sounds right. One more thing - my service area is Calgary and surrounding areas, about a 50km radius. We don't go further than that usually.
+
+Agent: Got it. Service area is Calgary metro, 50km radius. We'll have Clara ask for the address early in the conversation to verify they're in your service area.
+
+Ben: Perfect. This is great.
+
+Agent: Excellent. We'll have your updated Clara configuration ready for testing by end of day. You'll receive a test number to try it out. Any questions?
+
+Ben: No, I think we're good. Thanks!
+
+Agent: Great. We'll send you the test number within a few hours. Looking forward to getting you live soon!
+
+---
+
+KEY UPDATES FROM ONBOARDING:
+- Business Hours: Monday-Friday, 8 AM - 5 PM Mountain Time (MST)
+- Timezone: Mountain Time (Calgary, Alberta)
+- Main Contact: Ben Penoyer - 403-555-0123 (cell, also business line)
+- Transfer timeout: 30 seconds
+- Callback timeframe: 2 hours (business hours), 9 AM next day (after hours)
+
+VIP CONTACTS (bypass Clara):
+- Priority Property Management: 403-555-7890 (gas stations - ALWAYS urgent)
+- ABC Construction: 403-555-1111
+- BuildRight Homes: 403-555-2222
+- Calgary Custom Builders: 403-555-3333
+
+EMERGENCY RULES:
+- Known commercial clients: Route to Ben's cell immediately
+- Unknown callers: NOT equipped for emergency services, take message, suggest they call another electrician
+- Priority Property Management gas station issues: ALWAYS urgent, immediate transfer
+
+SERVICES NOT OFFERED:
+- Gemstone lights
+- Permanent holiday lighting
+
+SERVICE AREA: Calgary metro, 50km radius
+
+INTEGRATION CONSTRAINTS:
+- Never mention "Jobber" or software names
+- Never promise same-day service for residential customers
+- Say "schedule" or "note" instead of "create a ticket"
+
+NON-EMERGENCY AFTER HOURS:
+- Take message with name, phone, details
+- Promise callback by 9 AM next business day

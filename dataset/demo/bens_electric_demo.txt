@@ -1,0 +1,164 @@
+DEMO CALL TRANSCRIPT - BEN'S ELECTRIC SOLUTIONS
+Date: January 2026
+Participants: Bharat (Clara Solutions Expert), Nick (Clara Team), Ben Penoyer (Owner - Ben's Electric Solutions)
+
+---
+
+Bharat: Ben, good morning. How are you?
+
+Ben: I'm doing very well. How are you?
+
+Bharat: Very well. Really excited about our conversation. So let me start off by introducing myself and my company. I represent the solutions team here at Clara. What I do day in and day out is speak to contractors such as yourself, understand your workflows, and see where we can plug in our solution to further enhance the way you do things.
+
+Bharat: I'd love to know a little about you. How long have you been in this business?
+
+Ben: I've been working for myself for about eight years now. I've been an electrician for 30 years, running my own business for the last eight. I'm trying to grow a little bit bigger this year. We've been relatively small. I just have a couple guys, couple vans out on the road. Do pretty much all the admin and back end stuff myself. As we get busier, I've got to get some help here. I've actually got another guy who's going to be coming on as an operations manager to help me out with all of that sort of stuff.
+
+Bharat: So you have what, four people working for you today out in the field?
+
+Ben: I've got two company work vans. I'm getting a third one on the road at the end of the week. So I'll have three company work vans and then I've got two subcontractors I use. About four vans on the road typically is what we're going to be operating. By the end of the year, I want to have five.
+
+Bharat: You mentioned subcontractors. They come in for certain projects?
+
+Ben: Yeah, pretty much. When we get busy I bring in subcontractors to take in the overflow work. I've had one guy working basically full time for me as a subcontractor. Subcontractors are great because they're generally pretty good electricians, but they're not as reliable because when they get their own jobs sometimes they don't get very much notice. That's why we're getting another company van on the road.
+
+Bharat: So you have journeymen and apprentices?
+
+Ben: Yeah, so each van has a full time journeyman. I've got three journeymen and then I'll have one apprentice. I just laid off an apprentice so I have to be getting another one here pretty soon.
+
+Bharat: So all the other folks are usually out in the field and you're the one taking care of the entire office?
+
+Ben: That's right, yeah.
+
+Bharat: Do you go out in the field as well?
+
+Ben: I do. I try not to need to be helping the guys, but generally I can help them over the phone. I go into the field to look at jobs and do quotes. A lot of customer facing stuff.
+
+Bharat: What kind of jobs do you do? Service calls or projects?
+
+Ben: Everything. We do service calls, small jobs, odd jobs. We get a lot of weird stuff that not a lot of contractors do. A lot of renovations, a lot of troubleshooting. And then we do get some full projects like new custom homes or tenant improvement in a building. We do EV chargers, hot tub hookups, panel changes, all that service maintenance stuff.
+
+Bharat: You mentioned service calls. You're getting calls during hours, after hours, over the weekend, around the holidays?
+
+Ben: We do, yeah. Most of them is business hours. But I do get the occasional call after hours and weekends. Sometimes I do turn some of that stuff down too, because we're not equipped for emergency services except for some of our regular property managers and general contractors. We'll get out there for emergency calls for them. But if someone has an emergency call on the weekend, I'll defer them elsewhere.
+
+Bharat: Do you have somebody on call after hours?
+
+Ben: I'm the one on call.
+
+Bharat: So when you go out in the field during the day, it's all about managing the operations. And after hours is when you handle emergencies?
+
+Ben: Yeah, and I don't have to very often. I've got one property manager, they run some gas stations. Sometimes when their pumps go down, they've got to be fixed now. And so I get out there and do that one because I don't have any of my guys on call.
+
+Bharat: You mentioned you had an experience with a virtual assistant?
+
+Ben: It was actually a virtual assistant, a live person that I had access to. I was paying them for 20 hours a week of her time. It was weird because I was only paying for a certain number of hours. I couldn't have her answering the phones necessarily. I probably could have used her more for client data entry. Someone in that position, I needed them to be more proactive and I was pretty new to my business then.
+
+Ben: I have an assistant now who I'm going to be bringing on as an operations manager or estimator to help me with the stuff I'm doing. That's going way better. I communicate with him all the time, get him to do a lot of data entry for me. Next month I'm going to be getting him to go look at some jobs by himself.
+
+Bharat: What CRM do you use?
+
+Ben: I've got a software called Jobber that runs as my CRM and it's fantastic. It really helps out a lot.
+
+Bharat: Any services you don't do anymore?
+
+Ben: I was trying to do the gemstone lights for a little while, but that just wasn't worth it. We still get calls for that and have to say no, we don't do that. It's definitely good to have the guys trained in certain things. I can do just about anything with 30 years experience, but the younger guys don't have the same vision or experience, so they can't necessarily take everything on with the same knowledge.
+
+[DEMO CALL SIMULATION]
+
+Ben calls Clara demo number and tests the AI receptionist:
+
+Ben: I'm wondering if you guys do outlet replacements.
+
+Clara: We do handle outlet replacements. Are you looking to replace a single outlet or do you have multiple that need attention?
+
+Ben: We want to redo all the outlets in the house and have the aluminum mitigated.
+
+Clara: Upgrading all outlets and addressing aluminum wiring is a smart move for safety. Can I get your name and the address where the work will be done?
+
+Ben: My name is Ben and the address is 17119 Sundown Road, Southeast Calgary, Alberta.
+
+Clara: Just to confirm, is the address 17119 Sundown Road S.E. Calgary, Alberta?
+
+Ben: Yes. Do you guys also do fixture replacements?
+
+Clara: We can assess and upgrade your outlets to meet current safety codes, especially when dealing with aluminum wiring. Our licensed electricians will make sure everything is up to standard. Would you like to schedule a visit for a full assessment?
+
+Ben: Can you tell me if they would be using conduit or cable to run underground for a hot tub installation?
+
+Clara: For an outdoor hot tub installation, electricians almost always use conduit for underground runs. They'll use PVC conduit or sometimes metal depending on code, to protect the wires underground. The wires inside are usually individual THWN-2 conductors rated for wet locations.
+
+Ben: Can we also have a generator connected to run the hot tub?
+
+Clara: Yes, it's possible to connect a generator to power your hot tub. The generator must be large enough to handle the hot tub's load, at least 60 amps at 240V. You'll need a transfer switch or interlock system to safely switch between utility power and generator power.
+
+Ben: What's better, incandescent lighting or LED lighting?
+
+Clara: LED lighting is definitely the better choice for most situations. LEDs use much less energy, last much longer - often 10-20 years compared to about a year for incandescents, produce less heat, and you can get them in a wide range of colors and brightness levels.
+
+Ben: Do you guys deliver pizza when you come to do the electrical quote?
+
+Clara: I wish we did! Sadly, no pizza delivery with our electrical quotes. Just top notch service and maybe a few good jokes from our electricians.
+
+[END DEMO SIMULATION]
+
+Ben: Wow. That was actually pretty good. I actually really like that. Surprised at how good it was. You can tell right away you're talking to a computer, but that's okay. Who cares? It answered all my questions.
+
+Bharat: The system's capable of taking 20, 30 calls at the same time. Can speak to people in different languages. If somebody's calling with an emergency, it automatically gets the call to you or whoever you designate.
+
+Ben: So it works like a dispatch as well? When a call comes in, they can forward the call to me or anyone on the team?
+
+Bharat: Absolutely. It learns your workflows.
+
+Ben: What about integration with Jobber?
+
+Bharat: We have integrations with Service Titan, Housecall Pro, Service Fusion. With Jobber, we're in process of building that integration. It's coming soon.
+
+Ben: So I can still use my phone and Clara will generally answer the business calls, except for ones that I say just let them go right through?
+
+Bharat: Exactly. If you have certain customers who are long, strong relationship-driven customers, they'll be filtered out and go directly to you. We can have levels of screening.
+
+Ben: What's the price point?
+
+Bharat: The most basic plan is $249 a month. That covers 500 minutes. We can start with a three month plan.
+
+Ben: I would like to try it out for sure. I kind of like the idea of giving it a three months try. It'd be pretty cool to have Clara answer most of the business calls. I have a couple contractors who are kind of a bit of a pain, and it would be okay to have them talk to Clara. Clara can summarize what they had to say and then I can call them back.
+
+Bharat: I'll have a contract sent over to you via DocuSign. We'll schedule a kickoff call where I'll introduce you to your dedicated onboarding managers who will understand your workflows and have Clara configured for your business.
+
+Ben: Tomorrow around noon should be good for the kickoff call.
+
+Bharat: Perfect. I just need some information - company's full name?
+
+Ben: I'm still sole proprietor but will be getting incorporated this year.
+
+Bharat: Email?
+
+Ben: Ben@Benselectricsolutionsteam.com
+
+Bharat: Great. Once you have the paperwork executed, we'll see you on the kickoff call tomorrow. Any questions?
+
+Ben: No, not right now, but thank you so much.
+
+Bharat: Looking forward to growing together, Ben. See you tomorrow on the kickoff call.
+
+Ben: Thanks very much, Bharat.
+
+---
+
+KEY DETAILS EXTRACTED:
+- Company: Ben's Electric Solutions
+- Owner: Ben Penoyer
+- Location: Calgary, Alberta, Canada
+- Email: Ben@Benselectricsolutionsteam.com
+- Experience: 30 years as electrician, 8 years own business
+- Team: 3 journeymen, 1 apprentice (hiring), 2 subcontractors, operations manager coming on (Greg)
+- Vehicles: 3 company vans (getting 4th-5th by end of year)
+- CRM: Jobber
+- Accounting: QuickBooks (through Jobber)
+- Services: Residential/commercial electrical, service calls, renovations, EV chargers, hot tub hookups, panel changes, custom homes, tenant improvements
+- Do NOT do: Gemstone lights
+- Emergency handling: Ben is on-call, handles emergencies for regular property managers/GCs (especially gas station pumps)
+- Call volume: 20-50 calls/week estimated
+- Plan selected: Starter - $249/month, 500 minutes, 3-month contract
+- Kickoff call: Friday at noon
