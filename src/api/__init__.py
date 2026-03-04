@@ -12,6 +12,7 @@ from src.api.routers import (
     pipeline_router,
     accounts_router,
     dataset_router,
+    db_router,
 )
 
 app = FastAPI(
@@ -25,6 +26,7 @@ app.include_router(health_router)
 app.include_router(pipeline_router)
 app.include_router(accounts_router)
 app.include_router(dataset_router)
+app.include_router(db_router)
 
 
 @app.get("/")
