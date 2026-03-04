@@ -1,81 +1,94 @@
 {
-  "name": "Clara Pipeline - Demo Only (Pipeline A)",
+  "name": "Clara Pipeline - Demo (Direct Input)",
   "nodes": [
     {
-      "parameters": {},
-      "id": "trigger-manual",
-      "name": "Manual Trigger",
-      "type": "n8n-nodes-base.manualTrigger",
-      "typeVersion": 1,
-      "position": [240, 300]
-    },
-    {
       "parameters": {
-        "method": "GET",
-        "url": "http://api:8000/health",
+        "httpMethod": "POST",
+        "path": "demo-pipeline",
+        "responseMode": "responseNode",
         "options": {}
       },
-      "id": "health-check",
-      "name": "Check API Health",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [460, 300]
+      "id": "webhook-trigger",
+      "name": "Webhook - Demo Input",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 300],
+      "webhookId": "demo-pipeline-webhook"
     },
     {
       "parameters": {
         "method": "POST",
-        "url": "http://api:8000/pipeline/demo",
+        "url": "http://api:8000/pipeline/process/demo",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ account_id: $json.body.account_id, transcript: $json.body.transcript }) }}",
         "options": {
           "timeout": 300000
         }
       },
-      "id": "pipeline-a",
-      "name": "Process All Demo Calls",
+      "id": "process-demo",
+      "name": "Process Demo Transcript",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [680, 300]
+      "position": [480, 300]
     },
     {
       "parameters": {
-        "method": "GET",
-        "url": "http://api:8000/accounts",
-        "options": {}
+        "method": "POST",
+        "url": "http://api:8000/db/save",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ account_id: $json.account_id, version: $json.version, company_name: $json.company_name, account_memo: $json.account_memo, agent_spec: $json.agent_spec, raw_extraction: $json.raw_extraction || null, pipeline_type: 'demo' }) }}",
+        "options": {
+          "timeout": 30000
+        }
       },
-      "id": "list-results",
-      "name": "List Generated Accounts",
+      "id": "save-to-db",
+      "name": "Save to MongoDB",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [900, 300]
+      "position": [720, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $('Process Demo Transcript').item.json }}"
+      },
+      "id": "respond-webhook",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [960, 300]
     }
   ],
   "connections": {
-    "Manual Trigger": {
+    "Webhook - Demo Input": {
       "main": [
         [
           {
-            "node": "Check API Health",
+            "node": "Process Demo Transcript",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Check API Health": {
+    "Process Demo Transcript": {
       "main": [
         [
           {
-            "node": "Process All Demo Calls",
+            "node": "Save to MongoDB",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Process All Demo Calls": {
+    "Save to MongoDB": {
       "main": [
         [
           {
-            "node": "List Generated Accounts",
+            "node": "Respond to Webhook",
             "type": "main",
             "index": 0
           }
@@ -92,5 +105,6 @@
       "name": "clara-pipeline"
     }
   ],
-  "pinData": {}
+  "pinData": {},
+  "notes": "POST to webhook with:\n{\n  \"account_id\": \"my_company\",\n  \"transcript\": \"Full demo call transcript text here...\"\n}\n\nWorkflow: Webhook → Process Demo → Save to MongoDB → Respond"
 }

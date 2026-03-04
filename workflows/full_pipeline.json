@@ -1,177 +1,146 @@
 {
-  "name": "Clara Pipeline - Full Automation",
+  "name": "Clara Pipeline - Full (Direct Input)",
   "nodes": [
     {
-      "parameters": {},
-      "id": "trigger-manual",
-      "name": "Manual Trigger",
-      "type": "n8n-nodes-base.manualTrigger",
-      "typeVersion": 1,
-      "position": [240, 300]
-    },
-    {
       "parameters": {
-        "method": "GET",
-        "url": "http://api:8000/health",
+        "httpMethod": "POST",
+        "path": "full-pipeline",
+        "responseMode": "responseNode",
         "options": {}
       },
-      "id": "health-check",
-      "name": "Check API Health",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [460, 300]
-    },
-    {
-      "parameters": {
-        "method": "GET",
-        "url": "http://api:8000/dataset",
-        "options": {}
-      },
-      "id": "list-dataset",
-      "name": "List Dataset Files",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [680, 300]
+      "id": "webhook-trigger",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 300],
+      "webhookId": "full-pipeline-webhook"
     },
     {
       "parameters": {
         "method": "POST",
-        "url": "http://api:8000/pipeline/demo",
-        "options": {
-          "timeout": 300000
-        }
+        "url": "http://api:8000/pipeline/process/demo",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ account_id: $json.body.account_id, transcript: $json.body.demo_transcript }) }}",
+        "options": { "timeout": 300000 }
       },
-      "id": "pipeline-a",
-      "name": "Pipeline A: Demo → v1",
+      "id": "process-demo",
+      "name": "Process Demo",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [900, 300]
+      "position": [480, 300]
     },
     {
       "parameters": {
         "method": "POST",
-        "url": "http://api:8000/pipeline/onboarding",
-        "options": {
-          "timeout": 300000
-        }
+        "url": "http://api:8000/db/save",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ account_id: $json.account_id, version: 'v1', company_name: $json.company_name, account_memo: $json.account_memo, agent_spec: $json.agent_spec, raw_extraction: $json.raw_extraction, pipeline_type: 'demo' }) }}",
+        "options": { "timeout": 30000 }
       },
-      "id": "pipeline-b",
-      "name": "Pipeline B: Onboarding → v2",
+      "id": "save-v1",
+      "name": "Save v1 to DB",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [1120, 300]
+      "position": [720, 300]
     },
     {
       "parameters": {
-        "method": "GET",
-        "url": "http://api:8000/accounts",
-        "options": {}
-      },
-      "id": "list-results",
-      "name": "List Generated Accounts",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [1340, 300]
-    },
-    {
-      "parameters": {
-        "values": {
-          "string": [
+        "conditions": {
+          "boolean": [
             {
-              "name": "pipeline_status",
-              "value": "complete"
-            },
-            {
-              "name": "summary",
-              "value": "={{ $json.count }} accounts processed"
+              "value1": "={{ $('Webhook').item.json.body.onboarding_transcript ? true : false }}",
+              "value2": true
             }
           ]
-        },
-        "options": {}
+        }
       },
-      "id": "set-complete",
-      "name": "Pipeline Complete",
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [1560, 300]
+      "id": "check-onboarding",
+      "name": "Has Onboarding?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [960, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://api:8000/pipeline/process/onboarding",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ account_id: $('Webhook').item.json.body.account_id, transcript: $('Webhook').item.json.body.onboarding_transcript, v1_memo: $('Process Demo').item.json.account_memo }) }}",
+        "options": { "timeout": 300000 }
+      },
+      "id": "process-onboarding",
+      "name": "Process Onboarding",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1200, 200]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://api:8000/db/save",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ account_id: $json.account_id, version: 'v2', company_name: $json.company_name, account_memo: $json.account_memo, agent_spec: $json.agent_spec, raw_extraction: $json.raw_extraction, changelog: $json.changelog, pipeline_type: 'onboarding' }) }}",
+        "options": { "timeout": 30000 }
+      },
+      "id": "save-v2",
+      "name": "Save v2 to DB",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1440, 200]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}"
+      },
+      "id": "respond-v2",
+      "name": "Respond v2",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [1680, 200]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $('Process Demo').item.json }}"
+      },
+      "id": "respond-v1",
+      "name": "Respond v1",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [1200, 400]
     }
   ],
   "connections": {
-    "Manual Trigger": {
+    "Webhook": {
+      "main": [[{ "node": "Process Demo", "type": "main", "index": 0 }]]
+    },
+    "Process Demo": {
+      "main": [[{ "node": "Save v1 to DB", "type": "main", "index": 0 }]]
+    },
+    "Save v1 to DB": {
+      "main": [[{ "node": "Has Onboarding?", "type": "main", "index": 0 }]]
+    },
+    "Has Onboarding?": {
       "main": [
-        [
-          {
-            "node": "Check API Health",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        [{ "node": "Process Onboarding", "type": "main", "index": 0 }],
+        [{ "node": "Respond v1", "type": "main", "index": 0 }]
       ]
     },
-    "Check API Health": {
-      "main": [
-        [
-          {
-            "node": "List Dataset Files",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
+    "Process Onboarding": {
+      "main": [[{ "node": "Save v2 to DB", "type": "main", "index": 0 }]]
     },
-    "List Dataset Files": {
-      "main": [
-        [
-          {
-            "node": "Pipeline A: Demo → v1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Pipeline A: Demo → v1": {
-      "main": [
-        [
-          {
-            "node": "Pipeline B: Onboarding → v2",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Pipeline B: Onboarding → v2": {
-      "main": [
-        [
-          {
-            "node": "List Generated Accounts",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "List Generated Accounts": {
-      "main": [
-        [
-          {
-            "node": "Pipeline Complete",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
+    "Save v2 to DB": {
+      "main": [[{ "node": "Respond v2", "type": "main", "index": 0 }]]
     }
   },
   "active": false,
-  "settings": {
-    "executionOrder": "v1"
-  },
-  "tags": [
-    {
-      "name": "clara-pipeline"
-    }
-  ],
-  "pinData": {}
+  "settings": { "executionOrder": "v1" },
+  "tags": [{ "name": "clara-pipeline" }],
+  "pinData": {},
+  "notes": "Full Pipeline: Demo → Save v1 → (if onboarding) Onboarding → Save v2\n\nPOST: { account_id, demo_transcript, onboarding_transcript? }"
 }
