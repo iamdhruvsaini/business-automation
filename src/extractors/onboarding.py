@@ -34,11 +34,12 @@ UPDATE_EXTRACTION_PROMPT = ChatPromptTemplate.from_messages([
         """You are a precise data extraction assistant.
 Find ALL changes, updates, corrections, and additions mentioned in the onboarding call.
 ONLY include fields that have actual changes. Leave unchanged fields as null or empty.
-Compare against the current configuration to identify what's different.""",
+Compare against the current configuration to identify what's different.
+You MUST respond with valid JSON matching the schema exactly.""",
     ),
     (
         "human",
-        """Analyze this onboarding call to find updates to an existing business configuration.
+        """Analyze this onboarding call to find updates to an existing business configuration. Return as JSON.
 
 CURRENT CONFIGURATION:
 {current_config}
@@ -57,7 +58,9 @@ Extract all changes including:
 - New constraints (things to never say/do)
 - Pricing or promotions
 - Callback timeframe changes
-- Brief summary of all changes""",
+- Brief summary of all changes
+
+Return as JSON.""",
     ),
 ])
 
@@ -71,7 +74,7 @@ class OnboardingProcessor:
             model=GROQ_MODEL,
             api_key=api_key,
             temperature=0.1,
-        ).with_structured_output(OnboardingExtraction)
+        ).with_structured_output(OnboardingExtraction, method="json_mode")
         self.chain = UPDATE_EXTRACTION_PROMPT | self.llm
 
     def extract_updates(

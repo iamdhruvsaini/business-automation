@@ -120,7 +120,7 @@ if exist pyproject.toml (
 )
 
 docker-compose down >nul 2>&1
-docker-compose up -d
+docker-compose up -d 
 
 echo.
 echo [INFO] Waiting for services to start...

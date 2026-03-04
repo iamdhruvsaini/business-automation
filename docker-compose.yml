@@ -28,6 +28,7 @@ services:
     volumes:
       - ./dataset:/app/dataset:ro
       - ./outputs:/app/outputs
+      - ./src:/app/src:ro
     depends_on:
       - mongodb
     healthcheck:

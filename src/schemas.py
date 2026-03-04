@@ -2,8 +2,20 @@
 Pydantic Schemas for Structured Output Extraction
 Using LangChain's structured output feature for reliable data extraction.
 """
-from typing import Optional
-from pydantic import BaseModel, Field
+from typing import Optional, Any
+from pydantic import BaseModel, Field, field_validator
+
+
+def _ensure_list(v: Any) -> list[str]:
+    """Convert string to list if LLM returns wrong type."""
+    if v is None:
+        return []
+    if isinstance(v, str):
+        # LLM returned string instead of array - convert it
+        return [v] if v.strip() else []
+    if isinstance(v, list):
+        return v
+    return []
 
 
 # ============ DEMO CALL EXTRACTION SCHEMA ============
@@ -19,6 +31,11 @@ class BusinessHours(BaseModel):
     start: str = Field(default="", description="Opening time e.g. '8:00 AM'")
     end: str = Field(default="", description="Closing time e.g. '6:00 PM'")
     timezone: str = Field(default="", description="Timezone e.g. 'EST', 'PST', 'CST'")
+
+    @field_validator('days', mode='before')
+    @classmethod
+    def ensure_list(cls, v):
+        return _ensure_list(v)
 
 
 class DemoExtraction(BaseModel):
@@ -72,13 +89,22 @@ class DemoExtraction(BaseModel):
     service_area: str = Field(default="", description="Geographic area served")
 
     special_instructions: list[str] = Field(
-        default_factory=list, description="Any special handling instructions mentioned"
+        default_factory=list, 
+        description="MUST BE AN ARRAY of strings. Any special handling instructions mentioned. Example: [\"VIP callers go direct\", \"Screen calls from certain contractors\"]"
     )
 
     integration_constraints: list[str] = Field(
         default_factory=list,
-        description="Things to never say or do (e.g., don't mention software names)",
+        description="MUST BE AN ARRAY of strings. Things to never say or do (e.g., don't mention software names). Example: [\"Never mention competitor names\"]",
     )
+
+    # Validators to handle LLM returning strings instead of arrays
+    @field_validator('services_supported', 'services_not_offered', 'emergency_definition', 
+                     'emergency_backup_contacts', 'special_instructions', 'integration_constraints',
+                     mode='before')
+    @classmethod
+    def ensure_list(cls, v):
+        return _ensure_list(v)
 
 
 # ============ ONBOARDING CALL EXTRACTION SCHEMA ============
@@ -91,6 +117,13 @@ class BusinessHoursUpdate(BaseModel):
     start: Optional[str] = Field(default=None, description="Updated start time if changed")
     end: Optional[str] = Field(default=None, description="Updated end time if changed")
     timezone: Optional[str] = Field(default=None, description="Updated timezone if changed")
+
+    @field_validator('days', mode='before')
+    @classmethod
+    def ensure_list(cls, v):
+        if v is None:
+            return None
+        return _ensure_list(v)
 
 
 class EmergencyContactUpdate(BaseModel):
@@ -108,6 +141,13 @@ class EmergencyContactUpdate(BaseModel):
     timeout_seconds: Optional[int] = Field(
         default=None, description="New timeout if changed"
     )
+
+    @field_validator('backup_contacts', mode='before')
+    @classmethod
+    def ensure_list(cls, v):
+        if v is None:
+            return None
+        return _ensure_list(v)
 
 
 class OnboardingExtraction(BaseModel):
@@ -158,3 +198,10 @@ class OnboardingExtraction(BaseModel):
         default="",
         description="Brief summary of all changes from this onboarding call",
     )
+
+    # Validators to handle LLM returning strings instead of arrays
+    @field_validator('new_services', 'removed_restrictions', 'new_instructions', 
+                     'new_constraints', 'pricing_promotions', mode='before')
+    @classmethod
+    def ensure_list(cls, v):
+        return _ensure_list(v)

@@ -34,23 +34,35 @@ Do NOT guess or make up any information.
 If something is not mentioned, leave it as empty string or empty array.
 Be precise with phone numbers, addresses, and times.
 
-IMPORTANT: All string fields MUST be plain text strings, NOT objects or nested structures.""",
+You MUST respond with valid JSON matching the schema exactly.
+
+IMPORTANT DATA TYPES:
+- All string fields MUST be plain text strings, NOT objects or nested structures.
+- special_instructions MUST be an ARRAY of strings, e.g. ["instruction 1", "instruction 2"]. NEVER a single string.
+- services_supported MUST be an ARRAY of strings.
+- services_not_offered MUST be an ARRAY of strings.
+- emergency_definition MUST be an ARRAY of strings.
+- integration_constraints MUST be an ARRAY of strings.
+- emergency_backup_contacts MUST be an ARRAY of strings.""",
     ),
     (
         "human",
-        """Extract business information from this demo call transcript:
+        """Extract business information from this demo call transcript and return as JSON:
 
 {transcript}
 
 Extract all relevant details about the company including:
-- Company name
-- Business hours (days, start time, end time, timezone)
-- Office address  
-- Services they offer and services they explicitly do NOT offer
-- Emergency definitions and contacts (phone numbers, timeout)
+- Company name (string)
+- Business hours (days as array, start time, end time, timezone)
+- Office address (string)
+- Services they offer (array of strings) and services they explicitly do NOT offer (array of strings)
+- Emergency definitions (array of strings) and contacts (phone numbers, timeout)
 - non_emergency_after_hours_action: A SIMPLE STRING describing what to do for non-emergency calls after hours (e.g. "Take a message with name and number")
-- Service area
-- Any special instructions or constraints""",
+- Service area (string)
+- special_instructions: MUST BE AN ARRAY of strings, each instruction as a separate array element. Example: ["VIP callers go direct", "Screen spam calls"]
+- integration_constraints: MUST BE AN ARRAY of strings
+
+Return as JSON.""",
     ),
 ])
 
@@ -64,18 +76,22 @@ class DemoExtractor:
             model=GROQ_MODEL,
             api_key=api_key,
             temperature=0.1,
-        ).with_structured_output(DemoExtraction)
+        ).with_structured_output(DemoExtraction, method="json_mode")
         self.chain = EXTRACTION_PROMPT | self.llm
 
     def extract(self, transcript: str) -> Optional[DemoExtraction]:
         """Extract structured data from transcript using LangChain."""
-        try:
-            result = self.chain.invoke({"transcript": transcript})
-            logger.info(f"Extracted: {result.company_name}")
-            return result
-        except Exception as e:
-            logger.error(f"Extraction error: {e}")
-            return None
+        max_retries = 3
+        for attempt in range(max_retries):
+            try:
+                result = self.chain.invoke({"transcript": transcript})
+                logger.info(f"Extracted: {result.company_name}")
+                return result
+            except Exception as e:
+                logger.warning(f"Extraction attempt {attempt + 1}/{max_retries} failed: {e}")
+                if attempt == max_retries - 1:
+                    logger.error(f"Extraction failed after {max_retries} attempts")
+                    return None
 
     def build_memo(self, extracted: DemoExtraction, account_id: str) -> dict[str, Any]:
         """Build structured account memo from extracted Pydantic model."""
